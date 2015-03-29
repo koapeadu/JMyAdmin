@@ -15,7 +15,7 @@ public class setFrame extends JFrame{
 	 */
 	setFrame(){
 		super("GiQuak");
-		setSize(1000,800);
+		setSize(1000,700);
 		setResizable(false);
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
