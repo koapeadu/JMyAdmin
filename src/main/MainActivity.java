@@ -3,13 +3,9 @@
  */
 package main;
 
-import globals.AppConstants;
-
-import javax.swing.JFrame;
-
-import userInterface.login.LoginUI;
 import mysqlbrowser.browser;
 import mysqlbrowser.setFrame;
+import userInterface.login.LoginUI;
 
 /**
  * Brings up the login interface and opens up main JMyAdmin window if login is

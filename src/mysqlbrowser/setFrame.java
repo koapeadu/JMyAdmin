@@ -5,9 +5,11 @@ package mysqlbrowser;
 
 import globals.AppConstants;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
 
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * @author Gifty Buah

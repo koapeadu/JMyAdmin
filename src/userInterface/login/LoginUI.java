@@ -13,7 +13,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -25,8 +24,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import mysqlServer.DBConnect;
 
@@ -70,7 +67,7 @@ public class LoginUI extends JDialog implements ActionListener {
 			Point origin = parent.getLocation();
 			setBounds(origin.x + parent.getWidth() / 4,
 					origin.y + parent.getHeight() / 4, parent.getWidth() / 4,
-					parent.getHeight() / 3);
+					parent.getHeight()*3 / 8);
 		}
 		// set layout
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));

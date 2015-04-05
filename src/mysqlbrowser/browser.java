@@ -3,10 +3,24 @@
  */
 package mysqlbrowser;
 
-import javax.swing.*;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * @author Gifty Buah
@@ -14,15 +28,13 @@ import java.util.ArrayList;
  */
 public class browser extends setFrame {
 
-	/**
-	 * @param args
-	 */
 	BorderLayout mainLayout = new BorderLayout();
 	JPanel mainPanel = new JPanel();
 	JPanel belowMainPanel = new JPanel();
 	JPanel leftmainPanel = new JPanel();
 	JPanel rightmainPanel = new JPanel();
-	JPanel leftUpperPanel = new JPanel();
+	JScrollPane leftUpperPanel = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	JPanel leftLowerPanel = new JPanel();
 	JPanel rightLowerPanel = new JPanel();
 	JPanel rightUpperPanel = new JPanel();
@@ -30,7 +42,8 @@ public class browser extends setFrame {
 	JTabbedPane sqlPanel = new JTabbedPane(JTabbedPane.BOTTOM,
 			JTabbedPane.SCROLL_TAB_LAYOUT);
 	ArrayList<JPanel> sqlDocuments = new ArrayList<JPanel>();
-	JPanel propertiesPanel = new JPanel();
+	JScrollPane propertiesPanel = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);;
 	JPanel importPanel = new JPanel();
 	JPanel exportPanel = new JPanel();
 	JPanel goPanel = new JPanel();
@@ -56,7 +69,9 @@ public class browser extends setFrame {
 	JMenuItem about = new JMenuItem("About");
 	JButton goButton = new JButton("Go");
 	JButton[] toolBarIcons = new JButton[4];
-	JButton[] upWorkspaceButtons = new JButton[4];
+	//JButton[] upWorkspaceButtons = new JButton[4];
+	databaseTree displayTree =new databaseTree();
+
 
 	// Constructor
 	public browser() {
@@ -125,6 +140,9 @@ public class browser extends setFrame {
 		sqlDocuments.get(0).add(goPanel, BorderLayout.SOUTH);
 
 		sqlPanel.addTab("Untitled1", null, sqlDocuments.get(0), "doc");
+		
+		propertiesTabHandler displayProperties = new propertiesTabHandler();
+		propertiesPanel.setViewportView(displayProperties.getProperties());
 
 		upWorkspaceLabel.addTab("SQL", null, sqlPanel, "SQL Query Tab");
 		upWorkspaceLabel.addTab("Properties", null, propertiesPanel,
@@ -133,6 +151,8 @@ public class browser extends setFrame {
 		upWorkspaceLabel.addTab("Export", null, exportPanel, "Export Tab");
 
 		rightUpperPanel.add(upWorkspaceLabel, BorderLayout.NORTH);
+		
+		leftUpperPanel.setViewportView(displayTree.getDatabaseTree());//add(displayTree.getDatabaseTree());
 	}
 
 	public void vertSplitPane(JPanel panel1, JPanel panel2, JPanel addPane,
@@ -159,5 +179,17 @@ public class browser extends setFrame {
 		addPane.add(splitPane);
 		splitPane.setContinuousLayout(true);
 	}
+	
+	public void horizonSplitPane(JScrollPane panel1, JPanel panel2, JPanel addPane,
+			int minsize) {
+		panel1.setMinimumSize(new Dimension(170, minsize));
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
+				panel1, panel2);
+
+		splitPane.setOneTouchExpandable(true);
+		addPane.add(splitPane);
+		splitPane.setContinuousLayout(true);
+	}
+	
 
 }
