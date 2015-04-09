@@ -161,4 +161,14 @@ public class SqlTabbedPane {
 		return titlePanel;
 	}
 
+	public static boolean saveAllTabsOnWindowClose() {
+		int numofTabs = sqlPanel.getTabCount();
+		for(int i=0;i<numofTabs;i++) {
+		if(	!((SqlDocument) sqlPanel.getComponentAt(i)).close()){
+				return false;
+		}
+			i++;
+		}return true;
+	}
+
 }
