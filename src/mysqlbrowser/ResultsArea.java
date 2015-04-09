@@ -31,8 +31,8 @@ public class ResultsArea {
 		URL initDoc = getClass().getResource("/resources/InitResultsArea.html");
 		try {
 			resultsPane.setPage(initDoc);
+			resultsPane.setEditable(false);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -52,7 +52,6 @@ public class ResultsArea {
 		try {
 			d.insertBeforeEnd(d.getElement("BOX"), "<p>" + text + "</p>");
 		} catch (BadLocationException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -70,7 +69,6 @@ public class ResultsArea {
 			d.insertBeforeEnd(d.getElement("BOX"), "<p class='text-success'>"
 					+ text + "</p>");
 		} catch (BadLocationException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -87,12 +85,9 @@ public class ResultsArea {
 		try {
 			d.insertBeforeEnd(d.getElement("BOX"), "<p class='text-danger'>"
 					+ text + "</p>");
-			System.out.println(resultsPane.getText());
-
 		} catch (BadLocationException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	public void clearAll() {
@@ -100,9 +95,8 @@ public class ResultsArea {
 		try {
 			d.setInnerHTML(d.getElement("BOX"), "");
 		} catch (BadLocationException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
 	}
 
 }

@@ -38,7 +38,7 @@ public class browser extends setFrame implements WindowListener {
 	JPanel leftLowerPanel = new JPanel();
 	JPanel rightLowerPanel = new JPanel();
 	JPanel rightUpperPanel = new JPanel();
-	JTabbedPane upWorkspaceLabel = new JTabbedPane();
+	static JTabbedPane rightTabbedPane = new JTabbedPane();
 	//SqlSplitPane sqlSplit = new SqlSplitPane();
 	SqlTabbedPane sqlPanel = new SqlTabbedPane();
 	ArrayList<JPanel> sqlDocuments = new ArrayList<JPanel>();
@@ -46,7 +46,8 @@ public class browser extends setFrame implements WindowListener {
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);;
 	JPanel importPanel = new JPanel();
-	JPanel exportPanel = new JPanel();
+	//JPanel exportPanel = new JPanel();
+	ExportTab exportTab = new ExportTab();
 	JPanel goPanel = new JPanel();
 
 	JToolBar ToolBar = new JToolBar();
@@ -60,6 +61,10 @@ public class browser extends setFrame implements WindowListener {
 	}public static JScrollPane getPropertiesPanel(){
 		return propertiesPanel;
 		
+	}
+	
+	public static JTabbedPane getRightTabbedPane(){
+		return rightTabbedPane;
 	}
 
 	// Constructor
@@ -97,14 +102,14 @@ public class browser extends setFrame implements WindowListener {
 		propertiesTabHandler displayProperties = new propertiesTabHandler();
 		propertiesPanel.setViewportView(displayProperties.getProperties());
 
-		upWorkspaceLabel.addTab("SQL", null, SqlTabbedPane.getTabbedPane(),
+		rightTabbedPane.addTab("SQL", null, SqlTabbedPane.getTabbedPane(),
 				"SQL Query Tab");
-		upWorkspaceLabel.addTab("Properties", null, propertiesPanel,
+		rightTabbedPane.addTab("Properties", null, propertiesPanel,
 				"Properties Tab");
-		upWorkspaceLabel.addTab("Import", null, importPanel, "Import Tab");
-		upWorkspaceLabel.addTab("Export", null, exportPanel, "Export Tab");
+		rightTabbedPane.addTab("Import", null, importPanel, "Import Tab");
+		rightTabbedPane.addTab("Export", null, exportTab.getPanel(), "Export Tab");
 
-		rightmainPanel.add(upWorkspaceLabel, BorderLayout.CENTER);
+		rightmainPanel.add(rightTabbedPane, BorderLayout.CENTER);
 
 		leftUpperPanel.setViewportView(displayTree.getDatabaseTree());// add(displayTree.getDatabaseTree());
 	}
@@ -184,5 +189,7 @@ public class browser extends setFrame implements WindowListener {
 		// TODO Auto-generated method stub
 
 	}
+	
+	
 
 }

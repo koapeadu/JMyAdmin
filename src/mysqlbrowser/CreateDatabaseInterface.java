@@ -23,12 +23,12 @@ public class CreateDatabaseInterface extends JDialog{
 	 * @param args
 	 */
 	JPanel databaseInterface =new JPanel(new FlowLayout(FlowLayout.LEFT,10,85));
-	JTextField databaseNameField = new JTextField("Enter database Name");
+	JTextField databaseNameField = new JTextField();
 	JLabel databaseNameLabel = new JLabel("Database Name:");
 	
 
 		public  CreateDatabaseInterface (JFrame parent){
-			super(parent, "Create Database", true);
+			super(parent, "Create Database Wizard", true);
 
 			// position dialog
 			if (parent != null) {
