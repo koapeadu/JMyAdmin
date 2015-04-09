@@ -105,6 +105,13 @@ public class toolBarActions implements ActionListener {
 	 * 
 	 * @return <code>toolBar</code>
 	 */
+	/*public void showDatabaseInterface(){ 
+		JPanel CreateDatabaseInterfacePanel=new JPanel();
+		CreateDatabaseInterface newObject =new CreateDatabaseInterface();
+		CreateDatabaseInterfacePanel=newObject.setUpInterface();
+		browser.getPropertiesPanel().setViewportView(CreateDatabaseInterfacePanel);
+		 }*/
+	 
 	public JMenuBar getMenuBar() {
 		return menuBar;
 	}
@@ -187,13 +194,15 @@ public class toolBarActions implements ActionListener {
 		} else if (e.getSource() == saveAs) {
 			SqlTabbedPane.saveDocumentAs();
 		}  else if (e.getSource() == toolBarButtons[4]) {
+			//Create dummy JFrame for the CreateDatabaseInterface constructor
+			setFrame dummy = new setFrame();
 			//open the create database interface
-			JPanel CreateDatabaseInterfacePanel=new JPanel();
-			CreateDatabaseInterface newObject =new CreateDatabaseInterface();
-			CreateDatabaseInterfacePanel=newObject.setUpInterface();
-			browser.propertiesPanel.add(CreateDatabaseInterfacePanel);
+			CreateDatabaseInterface newDatabaseInterface =new CreateDatabaseInterface(dummy);
+			
 		}  else if (e.getSource() == toolBarButtons[5]) {
 			//SqlTabbedPane.saveDocumentAs();
+			setFrame dummy = new setFrame();
+			CreateTableInterface newTableInterface =new CreateTableInterface(dummy);
 		}
 		
 

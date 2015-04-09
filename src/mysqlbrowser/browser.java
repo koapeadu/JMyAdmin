@@ -57,6 +57,9 @@ public class browser extends setFrame implements WindowListener {
 	
 	public static databaseTree getDisplayTree(){
 		return displayTree;
+	}public static JScrollPane getPropertiesPanel(){
+		return propertiesPanel;
+		
 	}
 
 	// Constructor
