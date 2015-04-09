@@ -29,6 +29,7 @@ import javax.swing.ScrollPaneConstants;
 public class browser extends setFrame {
 
 	BorderLayout mainLayout = new BorderLayout();
+	toolBarActions newtoolBarAction =new toolBarActions();
 	JPanel mainPanel = new JPanel();
 	JPanel belowMainPanel = new JPanel();
 	JPanel leftmainPanel = new JPanel();
@@ -48,13 +49,13 @@ public class browser extends setFrame {
 	JPanel exportPanel = new JPanel();
 	JPanel goPanel = new JPanel();
 	// JPanel workspace =new JPanel();
-	JMenuBar MenuBar = new JMenuBar();
+	//JMenuBar MenuBar = new JMenuBar();
 	JToolBar ToolBar = new JToolBar();
-	JTextArea workspaceArea = new JTextArea(10, 60);
-	JScrollPane SworkspaceArea = new JScrollPane(workspaceArea,
+	//JTextArea workspaceArea = new JTextArea(10, 60);
+	JScrollPane SworkspaceArea = new JScrollPane(newtoolBarAction.getTextArea(),
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	JMenu File = new JMenu("File");
+	/*JMenu File = new JMenu("File");
 	JMenu View = new JMenu("View");
 	JMenu Edit = new JMenu("Edit");
 	JMenu Help = new JMenu("Help");
@@ -66,17 +67,18 @@ public class browser extends setFrame {
 	JMenuItem redo = new JMenuItem("redo");
 	JMenuItem formatCode = new JMenuItem("Format Code");
 	JMenuItem programHelp = new JMenuItem("programHelp");
-	JMenuItem about = new JMenuItem("About");
+	JMenuItem about = new JMenuItem("About");*/
 	JButton goButton = new JButton("Go");
-	JButton[] toolBarIcons = new JButton[4];
+	//JButton[] toolBarIcons = new JButton[4];
 	//JButton[] upWorkspaceButtons = new JButton[4];
 	databaseTree displayTree =new databaseTree();
+	
 
 
 	// Constructor
 	public browser() {
 		super();
-		setJMenuBar(MenuBar);
+		setJMenuBar(newtoolBarAction.getMenuBar());
 		mainPanel.setLayout(mainLayout);  //No Layout for a tabbed pane
 		rightmainPanel.setLayout(new BorderLayout());
 		rightUpperPanel.setLayout(new BorderLayout());
@@ -91,7 +93,7 @@ public class browser extends setFrame {
 
 	// setInterface creates the window
 	public void setInterface() {
-		File.add(newfile);
+		/*File.add(newfile);
 		File.add(open);
 		File.add(save);
 		File.add(exit);
@@ -113,12 +115,12 @@ public class browser extends setFrame {
 		ImageIcon stopIcon = new ImageIcon(getClass().getResource(
 				"/resources/stopicon.jpg"));
 		ImageIcon[] iconArray = { openIcon, runIcon, saveIcon, stopIcon };
-		String[] toolBarString = { "open", "run", "save", "stop" };
+		String[] toolBarString = { "open", "run", "save", "stop" };*/
 		goButton.setBackground(Color.GREEN);
 		goButton.setPreferredSize(new Dimension(50, 30));
 
 		// ToolBar.setRollover(true);
-		ToolBar.setPreferredSize(new Dimension(150, 20));
+	/*	ToolBar.setPreferredSize(new Dimension(150, 20));
 
 		for (int i = 0; i < 4; i++) {
 
@@ -126,8 +128,9 @@ public class browser extends setFrame {
 			toolBarIcons[i].setToolTipText(toolBarString[i]);
 			ToolBar.add(toolBarIcons[i]);
 
-		}
-		mainPanel.add(ToolBar, BorderLayout.PAGE_START);
+		}*/
+		ToolBar= newtoolBarAction.getToolBar();
+		mainPanel.add( ToolBar, BorderLayout.PAGE_START);
 
 		horizonSplitPane(leftUpperPanel, leftLowerPanel, leftmainPanel, 400);
 		horizonSplitPane(rightUpperPanel, rightLowerPanel, rightmainPanel, 300);
