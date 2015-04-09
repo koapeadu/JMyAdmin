@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -14,13 +15,14 @@ import java.io.IOException;
 import java.nio.file.*;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author Gifty Buah
  *
  */
 
-public class toolBarActions  implements ActionListener,KeyListener{
+public class toolBarActions  implements ActionListener{
 
 	/**
 	 * @param args
@@ -56,18 +58,17 @@ public class toolBarActions  implements ActionListener,KeyListener{
 		save.addActionListener(this);
 		toolBarIcons[0].addActionListener(this);
 		toolBarIcons[2].addActionListener(this);
-		open.setMnemonic(KeyEvent.VK_O);
-		save.setMnemonic(KeyEvent.VK_S);
-		exit.setMnemonic(KeyEvent.VK_ESCAPE);
-		undo.setMnemonic(KeyEvent.VK_Z);
-		redo.setMnemonic(KeyEvent.VK_R);
-		newfile.setMnemonic(KeyEvent.VK_N);
-	/*	try {
-			analyzePath();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+	
+		//creating shortcuts for some menu items
+		open.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_O, ActionEvent.CTRL_MASK ) );
+		save.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_S, ActionEvent.CTRL_MASK ) );
+		exit.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, ActionEvent.CTRL_MASK ) );
+		undo.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_Z, ActionEvent.CTRL_MASK ) );
+		redo.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_R, ActionEvent.CTRL_MASK ) );
+		newfile.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_N, ActionEvent.CTRL_MASK ) );
+		
+		
+	
 	}
 	
 	public JMenuBar getMenuBar(){
@@ -83,8 +84,7 @@ public class toolBarActions  implements ActionListener,KeyListener{
 	}
 	
 	 public void setInterfaceOfToolbar(){
-		// open.setMnemonic(KeyEvent.VK_O);
-		 
+				 
 			ImageIcon openIcon = new ImageIcon(getClass().getResource(
 					"/resources/open.jpg"));
 			ImageIcon runIcon = new ImageIcon(getClass().getResource(
@@ -127,44 +127,25 @@ public class toolBarActions  implements ActionListener,KeyListener{
 	}
 
 	 private Path getOpenFilePath(JComponent open){
+		 
 		 JFileChooser fileChooser = new JFileChooser();
+		 FileNameExtensionFilter filter = new FileNameExtensionFilter("txt", "sql");
+		 fileChooser.addChoosableFileFilter(filter);
 		 fileChooser.setFileSelectionMode(
 				 JFileChooser.FILES_ONLY);
 				 int result = fileChooser.showOpenDialog(open);
 				 
 				 if(result==JFileChooser.CANCEL_OPTION){
 					 System.exit(1);
+					// fileChooser.showOpenDialog(open).
 				 }
 				 return fileChooser.getSelectedFile().toPath();
 	 }
 	 
-	/* private Path getOpenFilePath(JMenuItem open){
-		 JFileChooser fileChooser = new JFileChooser();
-		 fileChooser.setFileSelectionMode(
-				 JFileChooser.FILES_ONLY);
-				 int result = fileChooser.showOpenDialog(open);
-				 
-				 if(result==JFileChooser.CANCEL_OPTION){
-					 System.exit(1);
-				 }
-				 return fileChooser.getSelectedFile().toPath();
-	 }*/
-	 
-	 //method version for a JButton
-	 private Path getSaveFilePath(JButton save){
-		 JFileChooser fileChooser = new JFileChooser();
-		 fileChooser.setFileSelectionMode(
-				 JFileChooser.FILES_ONLY);
-				 int result = fileChooser.showSaveDialog(save);
-				 
-				 if(result==JFileChooser.CANCEL_OPTION){
-					 System.exit(1);
-				 }
-				 return fileChooser.getSelectedFile().toPath();
-	 } 
+
 	 
 	
-	 //method version for a JMenuItem
+	  
 	 private Path getSaveFilePath(JComponent save){
 		 JFileChooser fileChooser = new JFileChooser();
 		 fileChooser.setFileSelectionMode(
@@ -176,48 +157,7 @@ public class toolBarActions  implements ActionListener,KeyListener{
 				 }
 				 return fileChooser.getSelectedFile().toPath();
 	 } 
-/*	   public void analyzePath() throws IOException
- {
- // get Path to user-selected file or directory
- Path path =getFilePath();
 
- if (path != null && Files.exists(path)) // if exists, display info
-{
- // gather file (or directory) information
- StringBuilder builder = new StringBuilder();
- builder.append(String.format("%s:%n", path.getFileName()));
- builder.append(String.format("%s a directory%n",
- Files.isDirectory(path) ? "Is" : "Is not"));
- builder.append(String.format("%s an absolute path%n",
- path.isAbsolute() ? "Is" : "Is not"));
- builder.append(String.format("Last modified: %s%n",
- Files.getLastModifiedTime(path)));
- builder.append(String.format("Size: %s%n", Files.size(path)));
- builder.append(String.format("Path: %s%n", path));
-	 builder.append(String.format("Absolute path: %s%n",
- path.toAbsolutePath()));
-
- if (Files.isDirectory(path)) // output directory listing
- {
- builder.append(String.format("%nDirectory contents:%n"));
-
- // object for iterating through a directory's contents
- DirectoryStream<Path> directoryStream =
- Files.newDirectoryStream(path);
-
- for (Path p : directoryStream)
- builder.append(String.format("%s%n", p));
- }
-
- workspaceArea.setText(builder.toString()); // display String content
- }
- else // Path does not exist
- {
- JOptionPane.showMessageDialog(this, path.getFileName() +
- " does not exist.", "ERROR", JOptionPane.ERROR_MESSAGE);
- }
- } // end method analyzePath
-	*/ 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -285,26 +225,5 @@ public class toolBarActions  implements ActionListener,KeyListener{
 		
 		
 	}
-
-@Override
-public void keyPressed(KeyEvent arg0) {
-	// TODO Auto-generated method stub
-	if(arg0.getKeyCode()==KeyEvent.VK_S){
-		
-	}
-	
-}
-
-@Override
-public void keyReleased(KeyEvent arg0) {
-	// TODO Auto-generated method stub
-	
-}
-
-@Override
-public void keyTyped(KeyEvent arg0) {
-	// TODO Auto-generated method stub
-	
-}
 
 }
