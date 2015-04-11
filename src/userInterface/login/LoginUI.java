@@ -67,7 +67,7 @@ public class LoginUI extends JDialog implements ActionListener {
 			Point origin = parent.getLocation();
 			setBounds(origin.x + parent.getWidth() / 4,
 					origin.y + parent.getHeight() / 4, parent.getWidth() / 4,
-					parent.getHeight()*3 / 8);
+					parent.getHeight() * 3 / 8);
 		}
 		// set layout
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));

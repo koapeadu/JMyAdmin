@@ -25,8 +25,11 @@ public class DBConnect {
 
 	/**
 	 * Constructor
-	 * @param userName User name for current user. e.g. root
-	 * @param password Password for current user
+	 * 
+	 * @param userName
+	 *            User name for current user. e.g. root
+	 * @param password
+	 *            Password for current user
 	 */
 	public DBConnect(String userName, String password) {
 		DBConnect.userName = userName;

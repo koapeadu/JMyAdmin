@@ -4,226 +4,181 @@
 package mysqlbrowser;
 
 import java.awt.Dimension;
-import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.*;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 
 /**
+ * This class sets up the menu bar and the tool bar for the program
+ * 
  * @author Gifty Buah
- *
+ * @author Quake
  */
 
-public class toolBarActions  implements ActionListener{
+public class toolBarActions implements ActionListener {
+	/**
+	 * Menu bar
+	 */
+	JMenuBar menuBar = new JMenuBar();
+	/**
+	 * File menu
+	 */
+	JMenu file = new JMenu("File");
+	JMenuItem newFile = new JMenuItem("New");
+	JMenuItem open = new JMenuItem("Open");
+	JMenuItem save = new JMenuItem("Save");
+	JMenuItem saveAs = new JMenuItem("Save As");
+	JMenuItem exit = new JMenuItem("Exit");
 
 	/**
-	 * @param args
+	 * View menu
 	 */
-	String fileLocation;
-	String contentsOfFile="";
-	BufferedWriter input;
-	JMenu File = new JMenu("File");
-	JMenu View = new JMenu("View");
-	JMenu Edit = new JMenu("Edit");
-	JMenu Help = new JMenu("Help");
-	JMenuItem newfile = new JMenuItem("new");
-	JMenuItem open = new JMenuItem("open");
-	JMenuItem save = new JMenuItem("save");
-	JMenuItem exit = new JMenuItem("exit");
-	JMenuItem undo = new JMenuItem("undo");
-	JMenuItem redo = new JMenuItem("redo");
-	static JToolBar ToolBar = new JToolBar();
-	JMenuBar MenuBar = new JMenuBar();
+	JMenu view = new JMenu("View");
+
+	/**
+	 * Edit Menu
+	 */
+	JMenu edit = new JMenu("Edit");
+	JMenuItem undo = new JMenuItem("Undo");
+	JMenuItem redo = new JMenuItem("Redo");
 	JMenuItem formatCode = new JMenuItem("Format Code");
-	JMenuItem programHelp = new JMenuItem("programHelp");
+
+	/**
+	 * Help Menu
+	 */
+	JMenu help = new JMenu("Help");
+	JMenuItem programHelp = new JMenuItem("Program Help");
 	JMenuItem about = new JMenuItem("About");
-	static JTextArea workspaceArea = new JTextArea(10, 60);
-	JButton[] toolBarIcons = new JButton[4];
-	
-	
-	public toolBarActions(){
-		
-	
-		
+
+	/**
+	 * Main tool bar
+	 */
+	static JToolBar toolBar = new JToolBar();
+	JButton[] toolBarButtons = new JButton[4];
+
+	/**
+	 * Default constructor
+	 * <p>
+	 * Initializes the <code>toolBar</code> and the <code>menuBar</code>
+	 */
+	public toolBarActions() {
+
 		setInterfaceOfToolbar();
+		// add action listeners
+		newFile.addActionListener(this);
 		open.addActionListener(this);
 		save.addActionListener(this);
-		toolBarIcons[0].addActionListener(this);
-		toolBarIcons[2].addActionListener(this);
-	
-		//creating shortcuts for some menu items
-		open.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_O, ActionEvent.CTRL_MASK ) );
-		save.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_S, ActionEvent.CTRL_MASK ) );
-		exit.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, ActionEvent.CTRL_MASK ) );
-		undo.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_Z, ActionEvent.CTRL_MASK ) );
-		redo.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_R, ActionEvent.CTRL_MASK ) );
-		newfile.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_N, ActionEvent.CTRL_MASK ) );
-		
-		
-	
-	}
-	
-	public JMenuBar getMenuBar(){
-		return MenuBar;
-	}
-	
-	public  JToolBar getToolBar(){
-		return ToolBar;
-	}
-	
-	public  JTextArea getTextArea(){
-		return workspaceArea;
-	}
-	
-	 public void setInterfaceOfToolbar(){
-				 
-			ImageIcon openIcon = new ImageIcon(getClass().getResource(
-					"/resources/open.jpg"));
-			ImageIcon runIcon = new ImageIcon(getClass().getResource(
-					"/resources/runicon2.jpg"));
-			ImageIcon saveIcon = new ImageIcon(getClass().getResource(
-					"/resources/saveicon.jpg"));
-			ImageIcon stopIcon = new ImageIcon(getClass().getResource(
-					"/resources/stopicon.jpg"));
-			ImageIcon[] iconArray = { openIcon, runIcon, saveIcon, stopIcon };
-			String[] toolBarString = { "open", "run", "save", "stop" };
-			ToolBar.setPreferredSize(new Dimension(150, 20));
+		saveAs.addActionListener(this);
+		toolBarButtons[0].addActionListener(this);
+		toolBarButtons[2].addActionListener(this);
 
-			for (int i = 0; i < 4; i++) {
-
-				toolBarIcons[i] = new JButton(iconArray[i]);
-				toolBarIcons[i].setToolTipText(toolBarString[i]);
-				ToolBar.add(toolBarIcons[i]);
-
-			}
-		 
-		 File.add(newfile);
-			File.add(open);
-			File.add(save);
-			File.add(exit);
-			Edit.add(undo);
-			Edit.add(redo);
-			Edit.add(formatCode);
-			Help.add(programHelp);
-			Help.add(about);
-			MenuBar.add(File);
-			MenuBar.add(View);
-			MenuBar.add(Edit);
-			MenuBar.add(Help);
-	 }
-	 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		toolBarActions newtoolBarAction =new toolBarActions();
+		// creating shortcuts for some menu items
+		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+				ActionEvent.CTRL_MASK));
+		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				ActionEvent.CTRL_MASK));
+		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+				ActionEvent.CTRL_MASK));
+		undo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z,
+				ActionEvent.CTRL_MASK));
+		redo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
+				ActionEvent.CTRL_MASK));
+		newFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
+				ActionEvent.CTRL_MASK));
 
 	}
 
-	 private Path getOpenFilePath(JComponent open){
-		 
-		 JFileChooser fileChooser = new JFileChooser();
-		 FileNameExtensionFilter filter = new FileNameExtensionFilter("txt", "sql");
-		 fileChooser.addChoosableFileFilter(filter);
-		 fileChooser.setFileSelectionMode(
-				 JFileChooser.FILES_ONLY);
-				 int result = fileChooser.showOpenDialog(open);
-				 
-				 if(result==JFileChooser.CANCEL_OPTION){
-					 System.exit(1);
-					// fileChooser.showOpenDialog(open).
-				 }
-				 return fileChooser.getSelectedFile().toPath();
-	 }
-	 
+	/**
+	 * Returns the <code>menuBar</code>
+	 * 
+	 * @return <code>toolBar</code>
+	 */
+	public JMenuBar getMenuBar() {
+		return menuBar;
+	}
 
-	 
-	
-	  
-	 private Path getSaveFilePath(JComponent save){
-		 JFileChooser fileChooser = new JFileChooser();
-		 fileChooser.setFileSelectionMode(
-				 JFileChooser.FILES_ONLY);
-				 int result = fileChooser.showSaveDialog(save);
-				 
-				 if(result==JFileChooser.CANCEL_OPTION){
-					 System.exit(1);
-				 }
-				 return fileChooser.getSelectedFile().toPath();
-	 } 
+	/**
+	 * Returns the <code>toolBar</code>
+	 * 
+	 * @return <code>toolBar</code>
+	 */
+	public JToolBar getToolBar() {
+		return toolBar;
+	}
 
+	/**
+	 * Add all the image buttons to the <code>toolBar</code> and add the menus
+	 * and menu items to the <code>menuBar</code>
+	 */
+	public void setInterfaceOfToolbar() {
 
+		ImageIcon openIcon = new ImageIcon(getClass().getResource(
+				"/resources/open.jpg"));
+		ImageIcon runIcon = new ImageIcon(getClass().getResource(
+				"/resources/runicon2.jpg"));
+		ImageIcon saveIcon = new ImageIcon(getClass().getResource(
+				"/resources/saveicon.jpg"));
+		ImageIcon stopIcon = new ImageIcon(getClass().getResource(
+				"/resources/stopicon.jpg"));
+		ImageIcon[] iconArray = { openIcon, runIcon, saveIcon, stopIcon };
+		String[] toolBarString = { "Open", "Run", "Save", "Stop" };
+		toolBar.setPreferredSize(new Dimension(150, 20));
+
+		for (int i = 0; i < 4; i++) {
+
+			toolBarButtons[i] = new JButton(iconArray[i]);
+			toolBarButtons[i].setToolTipText(toolBarString[i]);
+			toolBar.add(toolBarButtons[i]);
+
+		}
+
+		file.add(newFile);
+		file.add(open);
+		file.add(save);
+		file.add(exit);
+		edit.add(undo);
+		edit.add(redo);
+		edit.add(formatCode);
+		help.add(programHelp);
+		help.add(about);
+		menuBar.add(file);
+		menuBar.add(view);
+		menuBar.add(edit);
+		menuBar.add(help);
+	}
+
+	/**
+	 * Event handler for the <code>toolBar</code> and the <code>menuBar</code>
+	 * <ul>
+	 * <li>Create a new blank document if <code>newFile</code> or the new
+	 * toolbar button is selected
+	 * <li>Open a new document if <code>open</code> or the open toolbar button
+	 * is selected
+	 * <li>Save a document if <code>save</code> or the the save toolbar button
+	 * is selected
+	 * <li>Save a document as an SQL file if <code>saveAs</code> is selected
+	 * </ul>
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		Path filePath;
-		if(e.getSource()==open ||e.getSource()==toolBarIcons[0]){
-			filePath=getOpenFilePath((JComponent)e.getSource());
-		
-			fileLocation=filePath.toString();
-			JOptionPane.showMessageDialog(null, fileLocation);
-			try {
-				BufferedReader output =new BufferedReader(new FileReader(fileLocation));
-				try {
-					//read the contents of the file
-					String temp=output.readLine();
-					while(temp!=null){
-						contentsOfFile = contentsOfFile+temp+System.lineSeparator();
-						temp=output.readLine();
-						
-					}
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				//create new sql tab with contents of file
-				workspaceArea.setText(contentsOfFile);
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-			
-			
+		if (e.getSource() == open || e.getSource() == toolBarButtons[0]) {
+			SqlTabbedPane.createFileDocument();
+		} else if (e.getSource() == save || e.getSource() == toolBarButtons[2]) {
+			SqlTabbedPane.saveDocument();
+		} else if (e.getSource() == newFile
+				|| e.getSource() == toolBarButtons[1]) {
+			SqlTabbedPane.createBlankDocument();
+		} else if (e.getSource() == saveAs) {
+			SqlTabbedPane.saveDocumentAs();
 		}
-	
-		
-		else if(e.getSource()==save||e.getSource()==toolBarIcons[2]){
-			filePath=getSaveFilePath((JComponent)e.getSource());
-		
-			fileLocation=filePath.toString();
-			//testing if this thing works at all
-			JOptionPane.showMessageDialog(null, fileLocation);
-			try {
-				input = new BufferedWriter(new FileWriter(fileLocation));
-			} catch (IOException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-			try {
-				//read the contents of the Text Area
-				contentsOfFile=workspaceArea.getText();
-						input.write(contentsOfFile);
-						input.close();			
-				}
-			 catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			//create new sql tab with contents of file
-			//workspaceArea.setText(contentsOfFile);
-			
-			
-			
-		}
-		
-		
-	}
 
+	}
 }

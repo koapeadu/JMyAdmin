@@ -63,6 +63,16 @@ public class DBHandler {
 		return tableList;
 	}
 
+	/**
+	 * Obtain the structure of a table in a database
+	 * 
+	 * @param db
+	 *            The database containing the table
+	 * @param table
+	 *            The table to be described
+	 * @return Object[][] The structure of a table as an object array where the
+	 *         first row contains the names of the columns for display
+	 */
 	public static Object[][] decsribeTable(String db, String table) {
 		Object[][] tableDesc = null;
 		try {
@@ -71,33 +81,33 @@ public class DBHandler {
 			DBConnect.con.setCatalog(db);
 			// prepare statement
 			PreparedStatement descTableQuery = DBConnect.con
-					.prepareStatement("DESCRIBE "+table);
+					.prepareStatement("DESCRIBE " + table);
 			// execute query
 			ResultSet tbls = descTableQuery.executeQuery();
-			
+
 			// get metadata
 			ResultSetMetaData metaData = tbls.getMetaData();
 			// get number of columns
 			int numberOfColumns = metaData.getColumnCount();
 			// get column names
 			Object[] colNames = new Object[numberOfColumns];
-			for(int i=1; i<=numberOfColumns; i++){
-				colNames[i-1] = metaData.getColumnName(i);
+			for (int i = 1; i <= numberOfColumns; i++) {
+				colNames[i - 1] = metaData.getColumnName(i);
 			}
 			// get number of rows in ResultSet
 			tbls.last(); // move to last row
 			int numberOfRows = tbls.getRow(); // get row number
-			
+
 			// populate table with results
-			tableDesc = new Object[numberOfRows+1][];
+			tableDesc = new Object[numberOfRows + 1][];
 			// Store column names as first row
 			tableDesc[0] = colNames;
 			// get and store data rows
-			for (int i=1; i<=numberOfRows; i++) {
+			for (int i = 1; i <= numberOfRows; i++) {
 				tbls.absolute(i);
 				Object[] row = new Object[numberOfColumns];
 				for (int j = 1; j <= numberOfColumns; j++) {
-					row[j-1] = tbls.getObject(j);
+					row[j - 1] = tbls.getObject(j);
 				}
 				tableDesc[i] = row;
 			}
@@ -107,4 +117,60 @@ public class DBHandler {
 		}
 		return tableDesc;
 	}
+
+	/**
+	 * Function for obtaining the results of any SQL query as specified in the
+	 * String {@code query} using the database named {@code db}.
+	 * 
+	 * @param db
+	 *            The database to be used
+	 * @param query
+	 *            The query to be executed
+	 * @return The results of the query
+	 */
+	public static Object[][] sqlQuery(String db, String query) {
+		Object[][] result = null;
+		try {
+			DBConnect.con.createStatement();
+			// use the database db
+			DBConnect.con.setCatalog(db);
+			// prepare statement
+			PreparedStatement descTableQuery = DBConnect.con
+					.prepareStatement(query);
+			// execute query
+			ResultSet tbls = descTableQuery.executeQuery();
+
+			// get metadata
+			ResultSetMetaData metaData = tbls.getMetaData();
+			// get number of columns
+			int numberOfColumns = metaData.getColumnCount();
+			// get column names
+			Object[] colNames = new Object[numberOfColumns];
+			for (int i = 1; i <= numberOfColumns; i++) {
+				colNames[i - 1] = metaData.getColumnName(i);
+			}
+			// get number of rows in ResultSet
+			tbls.last(); // move to last row
+			int numberOfRows = tbls.getRow(); // get row number
+
+			// populate table with results
+			result = new Object[numberOfRows + 1][];
+			// Store column names as first row
+			result[0] = colNames;
+			// get and store data rows
+			for (int i = 1; i <= numberOfRows; i++) {
+				tbls.absolute(i);
+				Object[] row = new Object[numberOfColumns];
+				for (int j = 1; j <= numberOfColumns; j++) {
+					row[j - 1] = tbls.getObject(j);
+				}
+				result[i] = row;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }
