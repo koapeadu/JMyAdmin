@@ -3,9 +3,13 @@
  */
 package mysqlbrowser;
 
+import globals.AppConstants;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -13,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 /**
@@ -60,11 +66,25 @@ public class SqlDocument extends JPanel {
 		JScrollPane sqlScrollPane = new JScrollPane(sqlArea,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		sqlScrollPane.setPreferredSize(new Dimension(500, 400));
+		sqlScrollPane.setPreferredSize(new Dimension(
+				AppConstants.PROGRAM_WIDTH * 8 / 10,
+				AppConstants.PROGRAM_HEIGHT * 5 / 10));
 		add(sqlScrollPane, BorderLayout.CENTER);
 
 		buttonPanel.add(goButton);
 		add(buttonPanel, BorderLayout.SOUTH);
+
+		goButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String sqlQuery = sqlArea.getText();
+				ResultsTabbedPane res = new ResultsTabbedPane();
+				res.setTabbedPane((JTabbedPane) ((JSplitPane) SqlDocument.this
+						.getParent()).getBottomComponent());
+				res.exec(sqlQuery, browser.getDisplayTree()
+						.getSelectedDatabase());
+			}
+		});
 
 		open();
 	}

@@ -34,7 +34,7 @@ public class propertiesTabHandler {
 				// fetch table description from server
 				Object[][] tableDesc = DBHandler.decsribeTable(databaseName,
 						tableName);
-				if (tableDesc.length != 0) {
+				if (tableDesc != null && tableDesc.length != 0) {
 					descTable.setModel(new DescTableModel(tableDesc));
 				}
 			}

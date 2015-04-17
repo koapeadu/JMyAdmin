@@ -3,16 +3,26 @@
  */
 package mysqlbrowser;
 
+import globals.AppConstants;
+
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
+import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
 /**
@@ -55,7 +65,29 @@ public class SqlTabbedPane {
 		int index = ((sqlPanel.getTabCount() == 0) ? 0 : (sqlPanel
 				.getTabCount()));
 
-		sqlPanel.add(defaultPath, doc);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		ResultsTabbedPane res = new ResultsTabbedPane();
+		JTabbedPane downResultsTabs = res.getTabbedPane();
+		doc.setPreferredSize(new Dimension(
+				AppConstants.PROGRAM_WIDTH * 8 / 10 - 10,
+				AppConstants.PROGRAM_HEIGHT / 2 - 10));
+		downResultsTabs.setPreferredSize(new Dimension(
+				AppConstants.PROGRAM_WIDTH * 8 / 10 - 10,
+				AppConstants.PROGRAM_HEIGHT / 2 - 10));
+
+		doc.setMinimumSize(new Dimension(
+				AppConstants.PROGRAM_WIDTH * 2 / 10 - 10,
+				AppConstants.PROGRAM_HEIGHT * 2 / 10 - 10));
+
+		splitPane.setTopComponent(doc);
+		splitPane.setBottomComponent(downResultsTabs);
+
+		splitPane.setDividerLocation(0.5);
+		splitPane.setOneTouchExpandable(true);
+		splitPane.setContinuousLayout(true);
+		splitPane.setResizeWeight(0.5);
+
+		sqlPanel.add(defaultPath, splitPane);
 		sqlPanel.setTabComponentAt(index, getTabTitle(defaultPath));
 		sqlPanel.setSelectedIndex(index);
 	}
@@ -72,7 +104,29 @@ public class SqlTabbedPane {
 		String title = path.substring(path.lastIndexOf(File.separator) + 1);
 		SqlDocument doc = new SqlDocument(path);
 
-		sqlPanel.add(title, doc);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		ResultsTabbedPane res = new ResultsTabbedPane();
+		JTabbedPane downResultsTabs = res.getTabbedPane();
+		doc.setPreferredSize(new Dimension(
+				AppConstants.PROGRAM_WIDTH * 8 / 10 - 10,
+				AppConstants.PROGRAM_HEIGHT / 2 - 10));
+		downResultsTabs.setPreferredSize(new Dimension(
+				AppConstants.PROGRAM_WIDTH * 8 / 10 - 10,
+				AppConstants.PROGRAM_HEIGHT / 2 - 10));
+
+		doc.setMinimumSize(new Dimension(
+				AppConstants.PROGRAM_WIDTH * 2 / 10 - 10,
+				AppConstants.PROGRAM_HEIGHT * 2 / 10 - 10));
+
+		splitPane.setTopComponent(doc);
+		splitPane.setBottomComponent(downResultsTabs);
+
+		splitPane.setDividerLocation(0.5);
+		splitPane.setOneTouchExpandable(true);
+		splitPane.setContinuousLayout(true);
+		splitPane.setResizeWeight(0.5);
+
+		sqlPanel.add(title, splitPane);
 		sqlPanel.setTabComponentAt(sqlPanel.getTabCount() - 1,
 				getTabTitle(title));
 		sqlPanel.setSelectedIndex(sqlPanel.getTabCount() - 1);
@@ -83,8 +137,8 @@ public class SqlTabbedPane {
 	 */
 	public static void saveDocument() {
 		// save the file
-		SqlDocument doc = ((SqlDocument) sqlPanel.getComponentAt(sqlPanel
-				.getSelectedIndex()));
+		SqlDocument doc = ((SqlDocument) ((JSplitPane) sqlPanel
+				.getComponentAt(sqlPanel.getSelectedIndex())).getTopComponent());
 		if (doc.getFilePath().startsWith("Untitled")) {
 			doc.saveAs();
 		} else {
@@ -97,8 +151,8 @@ public class SqlTabbedPane {
 	 */
 	public static void saveDocumentAs() {
 		// save the file as an SQL file
-		((SqlDocument) sqlPanel.getComponentAt(sqlPanel.getSelectedIndex()))
-				.saveAs();
+		((SqlDocument) ((JSplitPane) sqlPanel.getComponentAt(sqlPanel
+				.getSelectedIndex())).getTopComponent()).saveAs();
 	}
 
 	/**
@@ -106,8 +160,9 @@ public class SqlTabbedPane {
 	 * saved and removes it from the <code>sqlPanel</code>
 	 */
 	public static void closeDocument() {
-		boolean closed = ((SqlDocument) sqlPanel.getComponentAt(sqlPanel
-				.getSelectedIndex())).close();
+		boolean closed = ((SqlDocument) ((JSplitPane) sqlPanel
+				.getComponentAt(sqlPanel.getSelectedIndex())).getTopComponent())
+				.close();
 		if (closed) {
 			sqlPanel.removeTabAt(sqlPanel.getSelectedIndex());
 		}
@@ -131,7 +186,9 @@ public class SqlTabbedPane {
 	 * @return The title of the tab
 	 */
 	private static JPanel getTabTitle(String title) {
-		JPanel titlePanel = new JPanel(new BorderLayout());
+		JPanel titlePanel = new JPanel(new BorderLayout(3, 1));
+		titlePanel.setOpaque(false);
+		titlePanel.setMinimumSize(new Dimension(0, 23));
 		// Add the tab's title
 		titlePanel.add(new JLabel(title), BorderLayout.WEST);
 		// create the close button
@@ -141,11 +198,32 @@ public class SqlTabbedPane {
 			@Override
 			protected void paintComponent(Graphics g) {
 				// paint close sign
-				g.drawLine(2, 2, 10, 10);
-				g.drawLine(2, 10, 10, 2);
+				Graphics2D g2 = (Graphics2D) g;
+				// shift the image for pressed buttons
+				setPreferredSize(new Dimension(21, 21));
+				if (getModel().isPressed()) {
+					g2.translate(1, 1);
+				}
+				g2.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND,
+						BasicStroke.JOIN_ROUND));
+				g2.setColor(Color.BLACK);
+				if (getModel().isRollover()) {
+					g2.setColor(Color.RED);
+				}
+				int delta = 6;
+				g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight()
+						- delta - 1);
+				g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight()
+						- delta - 1);
+				g2.dispose();
 			}
 		};
-		closeBtn.setPreferredSize(new Dimension(17, 17));
+		closeBtn.setFocusable(false);
+		closeBtn.setBorder(BorderFactory.createEtchedBorder());
+		closeBtn.setBorderPainted(false);
+		closeBtn.setContentAreaFilled(false);
+		closeBtn.setRolloverEnabled(true);
+		// closeBtn.setPreferredSize(new Dimension(18, 18));
 		closeBtn.setToolTipText("Close");
 		// add action listener to close the document if the close button is
 		// clicked
@@ -153,6 +231,18 @@ public class SqlTabbedPane {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				closeDocument();
+			}
+		});
+		// add animation on mouse motion
+		closeBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				AbstractButton button = (AbstractButton) e.getComponent();
+				button.setBorderPainted(true);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				AbstractButton button = (AbstractButton) e.getComponent();
+				button.setBorderPainted(false);
 			}
 		});
 		// add the close button

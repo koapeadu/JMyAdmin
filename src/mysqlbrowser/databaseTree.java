@@ -162,4 +162,26 @@ public class databaseTree implements TreeWillExpandListener,
 		propertiesTabHandler.showTableProperties();
 	}
 
+	public String getSelectedDatabase() {
+		String db = null;
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) showdatabaseTree
+				.getLastSelectedPathComponent();
+		if (node == null) {
+			return null;
+		}
+		switch (node.getLevel()) {
+		case 0:
+			break;
+		case 1:
+			db = node.getUserObject().toString();
+			break;
+		case 2:
+			db = ((DefaultMutableTreeNode) node.getParent()).getUserObject()
+					.toString();
+			break;
+		}
+		return db;
+
+	}
+
 }

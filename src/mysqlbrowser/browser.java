@@ -37,6 +37,7 @@ public class browser extends setFrame {
 	JPanel rightLowerPanel = new JPanel();
 	JPanel rightUpperPanel = new JPanel();
 	JTabbedPane upWorkspaceLabel = new JTabbedPane();
+	//SqlSplitPane sqlSplit = new SqlSplitPane();
 	SqlTabbedPane sqlPanel = new SqlTabbedPane();
 	ArrayList<JPanel> sqlDocuments = new ArrayList<JPanel>();
 	JScrollPane propertiesPanel = new JScrollPane(
@@ -50,7 +51,11 @@ public class browser extends setFrame {
 
 	JButton goButton = new JButton("Go");
 
-	databaseTree displayTree = new databaseTree();
+	static databaseTree displayTree = new databaseTree();
+	
+	public static databaseTree getDisplayTree(){
+		return displayTree;
+	}
 
 	// Constructor
 	public browser() {
@@ -78,7 +83,7 @@ public class browser extends setFrame {
 		mainPanel.add(ToolBar, BorderLayout.PAGE_START);
 
 		horizonSplitPane(leftUpperPanel, leftLowerPanel, leftmainPanel, 400);
-		horizonSplitPane(rightUpperPanel, rightLowerPanel, rightmainPanel, 300);
+		//horizonSplitPane(rightUpperPanel, rightLowerPanel, rightmainPanel, 300);
 		vertSplitPane(leftmainPanel, rightmainPanel, mainPanel, 240);
 
 		goPanel.add(goButton);
@@ -93,7 +98,7 @@ public class browser extends setFrame {
 		upWorkspaceLabel.addTab("Import", null, importPanel, "Import Tab");
 		upWorkspaceLabel.addTab("Export", null, exportPanel, "Export Tab");
 
-		rightUpperPanel.add(upWorkspaceLabel, BorderLayout.NORTH);
+		rightmainPanel.add(upWorkspaceLabel, BorderLayout.CENTER);
 
 		leftUpperPanel.setViewportView(displayTree.getDatabaseTree());// add(displayTree.getDatabaseTree());
 	}
@@ -112,23 +117,15 @@ public class browser extends setFrame {
 
 	}
 
-	public void horizonSplitPane(JPanel panel1, JPanel panel2, JPanel addPane,
-			int minsize) {
-		panel1.setMinimumSize(new Dimension(170, minsize));
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
-				panel1, panel2);
-
-		splitPane.setOneTouchExpandable(true);
-		addPane.add(splitPane);
-		splitPane.setContinuousLayout(true);
-	}
 
 	public void horizonSplitPane(JScrollPane panel1, JPanel panel2,
 			JPanel addPane, int minsize) {
 		panel1.setMinimumSize(new Dimension(170, minsize));
+		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
 				panel1, panel2);
-
+		
+		splitPane.setResizeWeight(0.2);
 		splitPane.setOneTouchExpandable(true);
 		addPane.add(splitPane);
 		splitPane.setContinuousLayout(true);

@@ -133,7 +133,9 @@ public class DBHandler {
 		try {
 			DBConnect.con.createStatement();
 			// use the database db
-			DBConnect.con.setCatalog(db);
+			if (db != null) {
+				DBConnect.con.setCatalog(db);
+			}
 			// prepare statement
 			PreparedStatement descTableQuery = DBConnect.con
 					.prepareStatement(query);
