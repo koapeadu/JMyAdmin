@@ -6,6 +6,8 @@ package mysqlbrowser;
 import globals.AppConstants;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -26,7 +28,7 @@ public class setFrame extends JFrame {
 				AppConstants.PROGRAM_HEIGHT);
 		setResizable(true);
 		setLayout(new BorderLayout());
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
@@ -35,5 +37,7 @@ public class setFrame extends JFrame {
 			e.printStackTrace();
 		}
 	}
+
+	
 
 }

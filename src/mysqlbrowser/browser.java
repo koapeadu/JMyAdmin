@@ -7,6 +7,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -21,9 +23,9 @@ import javax.swing.ScrollPaneConstants;
  * @author Gifty Buah
  *
  */
-public class browser extends setFrame {
+public class browser extends setFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
-	
+
 	BorderLayout mainLayout = new BorderLayout();
 	toolBarActions newtoolBarAction = new toolBarActions();
 	JPanel mainPanel = new JPanel();
@@ -40,7 +42,7 @@ public class browser extends setFrame {
 	//SqlSplitPane sqlSplit = new SqlSplitPane();
 	SqlTabbedPane sqlPanel = new SqlTabbedPane();
 	ArrayList<JPanel> sqlDocuments = new ArrayList<JPanel>();
-	JScrollPane propertiesPanel = new JScrollPane(
+	static JScrollPane propertiesPanel = new JScrollPane(
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);;
 	JPanel importPanel = new JPanel();
@@ -66,6 +68,7 @@ public class browser extends setFrame {
 		rightUpperPanel.setLayout(new BorderLayout());
 		leftmainPanel.setLayout(new BorderLayout());
 		goPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		addWindowListener(this);
 
 		setContentPane(mainPanel);
 		setInterface();
@@ -129,6 +132,54 @@ public class browser extends setFrame {
 		splitPane.setOneTouchExpandable(true);
 		addPane.add(splitPane);
 		splitPane.setContinuousLayout(true);
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		if (SqlTabbedPane.saveAllTabsOnWindowClose()) {
+			System.exit(0);
+		}
+		else {
+		
+		}
+
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

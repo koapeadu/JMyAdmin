@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
@@ -37,6 +38,7 @@ public class toolBarActions implements ActionListener {
 	JMenuItem save = new JMenuItem("Save");
 	JMenuItem saveAs = new JMenuItem("Save As");
 	JMenuItem exit = new JMenuItem("Exit");
+	
 
 	/**
 	 * View menu
@@ -62,7 +64,7 @@ public class toolBarActions implements ActionListener {
 	 * Main tool bar
 	 */
 	static JToolBar toolBar = new JToolBar();
-	JButton[] toolBarButtons = new JButton[4];
+	JButton[] toolBarButtons = new JButton[6];
 
 	/**
 	 * Default constructor
@@ -79,6 +81,8 @@ public class toolBarActions implements ActionListener {
 		saveAs.addActionListener(this);
 		toolBarButtons[0].addActionListener(this);
 		toolBarButtons[2].addActionListener(this);
+		toolBarButtons[4].addActionListener(this);
+		toolBarButtons[5].addActionListener(this);
 
 		// creating shortcuts for some menu items
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
@@ -128,11 +132,15 @@ public class toolBarActions implements ActionListener {
 				"/resources/saveicon.jpg"));
 		ImageIcon stopIcon = new ImageIcon(getClass().getResource(
 				"/resources/stopicon.jpg"));
-		ImageIcon[] iconArray = { openIcon, runIcon, saveIcon, stopIcon };
-		String[] toolBarString = { "Open", "Run", "Save", "Stop" };
+		ImageIcon createDatabaseIcon = new ImageIcon(getClass().getResource(
+				"/resources/createDatabaseIcon.jpeg"));
+		ImageIcon createTableIcon = new ImageIcon(getClass().getResource(
+				"/resources/createTableIcon.jpeg"));
+		ImageIcon[] iconArray = { openIcon, runIcon, saveIcon, stopIcon,createDatabaseIcon,createTableIcon };
+		String[] toolBarString = { "Open", "Run", "Save", "Stop","Create database","Create table" };
 		toolBar.setPreferredSize(new Dimension(150, 20));
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 6; i++) {
 
 			toolBarButtons[i] = new JButton(iconArray[i]);
 			toolBarButtons[i].setToolTipText(toolBarString[i]);
@@ -178,7 +186,18 @@ public class toolBarActions implements ActionListener {
 			SqlTabbedPane.createBlankDocument();
 		} else if (e.getSource() == saveAs) {
 			SqlTabbedPane.saveDocumentAs();
+		}  else if (e.getSource() == toolBarButtons[4]) {
+			//open the create database interface
+			JPanel CreateDatabaseInterfacePanel=new JPanel();
+			CreateDatabaseInterface newObject =new CreateDatabaseInterface();
+			CreateDatabaseInterfacePanel=newObject.setUpInterface();
+			browser.propertiesPanel.add(CreateDatabaseInterfacePanel);
+		}  else if (e.getSource() == toolBarButtons[5]) {
+			//SqlTabbedPane.saveDocumentAs();
 		}
+		
 
 	}
+	
+	
 }
