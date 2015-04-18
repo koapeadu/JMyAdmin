@@ -3,7 +3,12 @@
  */
 package mysqlbrowser;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javax.swing.JEditorPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.HTMLDocument;
 
 /**
  * Provides <code>resultsPane</code>, a <code>JEditorPane</code> which serves as
@@ -19,13 +24,21 @@ public class ResultsArea {
 
 	public ResultsArea() {
 		resultsPane.setContentType("text/html; charset=utf8");
-		intializeStyles();
+		intializeDocument();
 	}
 
-	private void intializeStyles() {
-		String css = getClass().getResource("/resources/Styles.css").toString();
-		resultsPane.setText("<link rel='stylesheet' media='screen' href='"
-				+ css + "' /> ");
+	private void intializeDocument() {
+		URL initDoc = getClass().getResource("/resources/InitResultsArea.html");
+		try {
+			resultsPane.setPage(initDoc);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public JEditorPane getArea() {
+		return resultsPane;
 	}
 
 	/**
@@ -35,7 +48,13 @@ public class ResultsArea {
 	 *            The message to be appended to the
 	 */
 	public void addMessage(String text) {
-		resultsPane.setText(resultsPane.getText() + "<p>" + text + "</p>");
+		HTMLDocument d = (HTMLDocument) resultsPane.getDocument();
+		try {
+			d.insertBeforeEnd(d.getElement("BOX"), "<p>" + text + "</p>");
+		} catch (BadLocationException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -46,8 +65,14 @@ public class ResultsArea {
 	 *            The message to be appended to the
 	 */
 	public void addSuccessMessage(String text) {
-		resultsPane.setText(resultsPane.getText() + "<p class='text-success'>"
-				+ text + "</p>");
+		HTMLDocument d = (HTMLDocument) resultsPane.getDocument();
+		try {
+			d.insertBeforeEnd(d.getElement("BOX"), "<p class='text-success'>"
+					+ text + "</p>");
+		} catch (BadLocationException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -58,12 +83,26 @@ public class ResultsArea {
 	 *            The message to be appended to the
 	 */
 	public void addFailureMessage(String text) {
-		resultsPane.setText(resultsPane.getText() + "<p class='text-danger'>"
-				+ text + "</p>");
+		HTMLDocument d = (HTMLDocument) resultsPane.getDocument();
+		try {
+			d.insertBeforeEnd(d.getElement("BOX"), "<p class='text-danger'>"
+					+ text + "</p>");
+			System.out.println(resultsPane.getText());
+
+		} catch (BadLocationException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 
 	public void clearAll() {
-		resultsPane.setText("");
+		HTMLDocument d = (HTMLDocument) resultsPane.getDocument();
+		try {
+			d.setInnerHTML(d.getElement("BOX"), "");
+		} catch (BadLocationException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 
 }

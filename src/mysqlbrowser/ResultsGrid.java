@@ -38,22 +38,14 @@ public class ResultsGrid {
 
 	/**
 	 * Populates the <code>resultsTable</code> with the results of the query
+	 * 
+	 * @param tableRes
+	 *            A two-dimensional <code>Object</code> array where row 3
+	 *            contains the column names and the remaining rows are the data
+	 *            fetched
 	 */
-	public void showQueryResults() {
-
-		Thread queryThread = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				// Query server and fetch results
-				Object[][] tableRes = DBHandler.sqlQuery(databaseName, query);
-				if (tableRes != null && tableRes.length != 0) {
-					resultsTable.setModel(new ResTableModel(tableRes));
-				}
-			}
-
-		});
-		queryThread.start();
+	public void showQueryResults(Object[][] tableRes) {
+		resultsTable.setModel(new ResTableModel(tableRes));
 	}
 
 	private static class ResTableModel extends AbstractTableModel {
@@ -67,21 +59,21 @@ public class ResultsGrid {
 
 		@Override
 		public int getColumnCount() {
-			return data[0].length;
+			return data[2].length;
 		}
 
 		@Override
 		public int getRowCount() {
-			return data.length - 1;
+			return data.length - 3;
 		}
 
 		@Override
 		public Object getValueAt(int row, int col) {
-			return data[row + 1][col];
+			return data[row + 3][col];
 		}
 
 		public String getColumnName(int col) {
-			return data[0][col].toString();
+			return data[2][col].toString();
 		}
 
 		/*
@@ -94,8 +86,8 @@ public class ResultsGrid {
 		}
 
 		public void setValueAt(Object value, int row, int col) {
-			data[row + 1][col] = value;
-			fireTableCellUpdated(row + 1, col);
+			data[row + 3][col] = value;
+			fireTableCellUpdated(row + 3, col);
 		}
 
 	}

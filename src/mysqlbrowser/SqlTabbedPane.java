@@ -169,6 +169,26 @@ public class SqlTabbedPane {
 	}
 
 	/**
+	 * Attempts closing all open documents and returns <code>true</code> only if
+	 * all the documents were successfully closed or stops and returns
+	 * <code>false</code> if cancelled.
+	 * 
+	 * @return <code>true</code> if all the documents were successfully closed;
+	 *         <code>false</code>if closing a document was cancelled
+	 */
+	public static boolean saveAllTabsOnWindowClose() {
+		int numofTabs = sqlPanel.getTabCount();
+		for (int i = 0; i < numofTabs; i++) {
+			if (!((SqlDocument) ((JSplitPane) sqlPanel.getComponentAt(i))
+					.getTopComponent()).close()) {
+				return false;
+			}
+			i++;
+		}
+		return true;
+	}
+
+	/**
 	 * Returns <code>sqlPanel</code>
 	 * 
 	 * @return <code>sqlPanel</code>
@@ -249,16 +269,6 @@ public class SqlTabbedPane {
 		titlePanel.add(closeBtn, BorderLayout.EAST);
 
 		return titlePanel;
-	}
-
-	public static boolean saveAllTabsOnWindowClose() {
-		int numofTabs = sqlPanel.getTabCount();
-		for(int i=0;i<numofTabs;i++) {
-		if(	!((SqlDocument) sqlPanel.getComponentAt(i)).close()){
-				return false;
-		}
-			i++;
-		}return true;
 	}
 
 }

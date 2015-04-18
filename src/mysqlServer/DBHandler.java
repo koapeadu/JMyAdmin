@@ -122,13 +122,13 @@ public class DBHandler {
 	 * Function for obtaining the results of any SQL query as specified in the
 	 * String {@code query} using the database named {@code db}.
 	 * 
-	 * @param db
-	 *            The database to be used
 	 * @param query
 	 *            The query to be executed
+	 * @param db
+	 *            The database to be used
 	 * @return The results of the query
 	 */
-	public static Object[][] sqlQuery(String db, String query) {
+	public static Object[][] sqlQuery(String query, String db) {
 		Object[][] result = null;
 		try {
 			DBConnect.con.createStatement();
@@ -140,37 +140,66 @@ public class DBHandler {
 			PreparedStatement descTableQuery = DBConnect.con
 					.prepareStatement(query);
 			// execute query
-			ResultSet tbls = descTableQuery.executeQuery();
-
-			// get metadata
-			ResultSetMetaData metaData = tbls.getMetaData();
-			// get number of columns
-			int numberOfColumns = metaData.getColumnCount();
-			// get column names
-			Object[] colNames = new Object[numberOfColumns];
-			for (int i = 1; i <= numberOfColumns; i++) {
-				colNames[i - 1] = metaData.getColumnName(i);
+			descTableQuery.execute();
+			// get results
+			ResultSet tbls = descTableQuery.getResultSet();
+			int updCount = descTableQuery.getUpdateCount();
+			/*
+			 * Handle statements that do not generate a data set
+			 */
+			if (tbls == null && updCount != -1) {
+				result = new Object[2][];
+				// row 1 Boolean: error, String: error message
+				result[0] = new Object[] { false, "" };
+				// row 2, Boolean: generated ResultSet, Int: update count,
+				// String: message
+				result[1] = new Object[] { false, updCount,
+						"Query OK, " + updCount + " rows affected" };
 			}
-			// get number of rows in ResultSet
-			tbls.last(); // move to last row
-			int numberOfRows = tbls.getRow(); // get row number
-
-			// populate table with results
-			result = new Object[numberOfRows + 1][];
-			// Store column names as first row
-			result[0] = colNames;
-			// get and store data rows
-			for (int i = 1; i <= numberOfRows; i++) {
-				tbls.absolute(i);
-				Object[] row = new Object[numberOfColumns];
-				for (int j = 1; j <= numberOfColumns; j++) {
-					row[j - 1] = tbls.getObject(j);
+			/*
+			 * Handle statements that generate a data set
+			 */
+			else if (tbls != null) {
+				// get metadata
+				ResultSetMetaData metaData = tbls.getMetaData();
+				// get number of columns
+				int numberOfColumns = metaData.getColumnCount();
+				// get column names
+				Object[] colNames = new Object[numberOfColumns];
+				for (int i = 1; i <= numberOfColumns; i++) {
+					colNames[i - 1] = metaData.getColumnLabel(i);
 				}
-				result[i] = row;
-			}
+				// get number of rows in ResultSet
+				tbls.last(); // move to last row
+				int numberOfRows = tbls.getRow(); // get row number
 
+				// populate table with results
+				result = new Object[numberOfRows + 3][];
+				// row 1 Boolean: error, String: error message
+				result[0] = new Object[] { false, "" };
+				// row 2, Boolean: generated ResultSet, Int: row count,
+				// String: message
+				result[1] = new Object[] { true, numberOfRows,
+						numberOfRows + " rows in set." };
+				// row 3: String[]: column names as third row
+				result[2] = colNames;
+				// get and store data rows
+				for (int i = 1; i <= numberOfRows; i++) {
+					tbls.absolute(i);
+					Object[] row = new Object[numberOfColumns];
+					for (int j = 1; j <= numberOfColumns; j++) {
+						row[j - 1] = tbls.getObject(j);
+					}
+					result[i+2] = row;
+				}
+
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+
+			result = new Object[1][];
+			// row 1 Boolean: error, String: error message
+			result[0] = new Object[] { true, "ERROR "+e.getErrorCode()+": "+ e.getMessage() };
 		}
 		return result;
 	}
