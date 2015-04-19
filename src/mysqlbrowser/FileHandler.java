@@ -82,11 +82,11 @@ public class FileHandler {
 	 *            The component to use to open the file chooser dialog
 	 * @return The absolute path to the selected file
 	 */
-	public static Path getOpenFilePath(JComponent open) {
+	public static Path getOpenFilePath(JComponent open, String filterName, String filterExtension) {
 
 		JFileChooser fileChooser = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"Structured Query Language (SQL)", "sql");
+				filterName, filterExtension);
 		// fileChooser.addChoosableFileFilter(filter);
 		fileChooser.setFileFilter(filter);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -106,8 +106,12 @@ public class FileHandler {
 	 *            The component to use to open the file chooser dialog
 	 * @return The absolute path to the chosen save location
 	 */
-	public static Path getSaveFilePath(JComponent save) {
+	public static Path getSaveFilePath(JComponent save,  String filterName, String filterExtension) {
 		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				filterName, filterExtension);
+		// fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		int result = fileChooser.showSaveDialog(save);
 

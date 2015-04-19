@@ -36,7 +36,9 @@ public class propertiesTabHandler {
 						tableName);
 				if (tableDesc != null && tableDesc.length != 0) {
 					descTable.setModel(new DescTableModel(tableDesc));
+					browser.getRightTabbedPane().setSelectedIndex(1);
 				}
+				
 			}
 
 		});

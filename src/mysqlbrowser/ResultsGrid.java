@@ -3,8 +3,6 @@ package mysqlbrowser;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import mysqlServer.DBHandler;
-
 /**
  * Provides a table for displaying the results of a query
  * 

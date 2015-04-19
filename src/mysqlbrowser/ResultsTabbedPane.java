@@ -23,11 +23,11 @@ import mysqlServer.DBHandler;
  *
  */
 public class ResultsTabbedPane {
-	static JTabbedPane resultsPane = new JTabbedPane(JTabbedPane.TOP,
+	JTabbedPane resultsPane = new JTabbedPane(JTabbedPane.TOP,
 			JTabbedPane.SCROLL_TAB_LAYOUT);
 	
-	static ResultsArea nonResultSet = new ResultsArea();
-	static boolean addedResultArea = false;
+	ResultsArea nonResultSet = new ResultsArea();
+	boolean addedResultArea = false;
 
 	public ResultsTabbedPane() {
 

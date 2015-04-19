@@ -97,7 +97,7 @@ public class SqlTabbedPane {
 	 * file and adds it to <code>sqlPanel</code>
 	 */
 	public static void createFileDocument() {
-		String path = FileHandler.getOpenFilePath(sqlPanel).toString();
+		String path = FileHandler.getOpenFilePath(sqlPanel, "Structured Query Language (SQL)", "sql").toString();
 		if (path == null) {
 			return;
 		}

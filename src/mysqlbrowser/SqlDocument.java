@@ -42,6 +42,8 @@ public class SqlDocument extends JPanel {
 
 	private boolean isEdited = false;
 
+	ResultsTabbedPane res = new ResultsTabbedPane();
+
 	public SqlDocument(String path) {
 		filePath = path;
 
@@ -78,7 +80,6 @@ public class SqlDocument extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String sqlQuery = sqlArea.getText();
-				ResultsTabbedPane res = new ResultsTabbedPane();
 				res.setTabbedPane((JTabbedPane) ((JSplitPane) SqlDocument.this
 						.getParent()).getBottomComponent());
 				res.exec(sqlQuery, browser.getDisplayTree()
@@ -87,6 +88,14 @@ public class SqlDocument extends JPanel {
 		});
 
 		open();
+	}
+
+	public void executeSelected() {
+		String sqlQuery = sqlArea.getSelectedText();
+		ResultsTabbedPane res = new ResultsTabbedPane();
+		res.setTabbedPane((JTabbedPane) ((JSplitPane) SqlDocument.this
+				.getParent()).getBottomComponent());
+		res.exec(sqlQuery, browser.getDisplayTree().getSelectedDatabase());
 	}
 
 	/**
@@ -116,7 +125,8 @@ public class SqlDocument extends JPanel {
 	 */
 	public boolean saveAs() {
 		// Get path to save file to
-		String path = FileHandler.getSaveFilePath(this).toString();
+		String path = FileHandler.getSaveFilePath(this,
+				"Structured Query Language (SQL)", "sql").toString();
 		if (path == null) {
 			return false;
 		}
