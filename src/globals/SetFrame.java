@@ -1,9 +1,7 @@
 /**
  * 
  */
-package mysqlbrowser;
-
-import globals.AppConstants;
+package globals;
 
 import java.awt.BorderLayout;
 
@@ -15,11 +13,11 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author Gifty Buah
  * @author Quake
  */
-public class setFrame extends JFrame {
+public class SetFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public setFrame() {
+	public SetFrame() {
 		super("JMyAdmin");
 		setBounds(AppConstants.PROGRAM_WIDTH / 5,
 				AppConstants.PROGRAM_HEIGHT / 5, AppConstants.PROGRAM_WIDTH,

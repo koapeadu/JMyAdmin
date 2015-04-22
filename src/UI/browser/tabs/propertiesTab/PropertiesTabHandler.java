@@ -1,29 +1,30 @@
 /**
  * 
  */
-package mysqlbrowser;
+package UI.browser.tabs.propertiesTab;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import UI.browser.Browser;
 import mysqlServer.DBHandler;
 
 /**
  * @author Gifty Buah
  *
  */
-public class propertiesTabHandler {
+public class PropertiesTabHandler {
 	static String databaseName;
 	static String tableName;
 
 	static JTable descTable = new JTable();
 
 	public static void setDatabase(String databaseName) {
-		propertiesTabHandler.databaseName = databaseName;
+		PropertiesTabHandler.databaseName = databaseName;
 	}
 
 	public static void setTable(String tableName) {
-		propertiesTabHandler.tableName = tableName;
+		PropertiesTabHandler.tableName = tableName;
 	}
 
 	public static void showTableProperties() {
@@ -36,7 +37,7 @@ public class propertiesTabHandler {
 						tableName);
 				if (tableDesc != null && tableDesc.length != 0) {
 					descTable.setModel(new DescTableModel(tableDesc));
-					browser.getRightTabbedPane().setSelectedIndex(1);
+					Browser.getRightTabbedPane().setSelectedIndex(1);
 				}
 				
 			}

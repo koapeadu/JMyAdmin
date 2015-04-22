@@ -1,4 +1,4 @@
-package mysqlbrowser;
+package UI.browser.tabs.sqlTab;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;

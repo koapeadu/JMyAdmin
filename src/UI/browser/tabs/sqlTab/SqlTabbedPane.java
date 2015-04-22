@@ -1,9 +1,10 @@
 /**
  * 
  */
-package mysqlbrowser;
+package UI.browser.tabs.sqlTab;
 
 import globals.AppConstants;
+import globals.FileHandler;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -269,6 +270,22 @@ public class SqlTabbedPane {
 		titlePanel.add(closeBtn, BorderLayout.EAST);
 
 		return titlePanel;
+	}
+
+	public static void executeCurrent() {
+		SqlDocument doc = ((SqlDocument) ((JSplitPane) sqlPanel.getSelectedComponent())
+				.getTopComponent());
+		if(doc!=null){
+			doc.execute();
+		}
+	}
+
+	public static void select(String rightClickedTable, String rightClickedDB) {
+		createBlankDocument();
+		SqlDocument doc = ((SqlDocument) ((JSplitPane) sqlPanel.getSelectedComponent())
+				.getTopComponent());
+		doc.setQuery("SELECT * FROM "+rightClickedDB+"."+rightClickedTable+" LIMIT 200");
+		doc.execute();
 	}
 
 }

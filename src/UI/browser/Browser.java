@@ -1,7 +1,9 @@
 /**
  * 
  */
-package mysqlbrowser;
+package UI.browser;
+
+import globals.SetFrame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,15 +21,20 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 
+import UI.browser.tabs.exportTab.ExportTab;
+import UI.browser.tabs.importTab.ImportTab;
+import UI.browser.tabs.propertiesTab.PropertiesTabHandler;
+import UI.browser.tabs.sqlTab.SqlTabbedPane;
+
 /**
  * @author Gifty Buah
  *
  */
-public class browser extends setFrame implements WindowListener {
+public class Browser extends SetFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
 
 	BorderLayout mainLayout = new BorderLayout();
-	toolBarActions newtoolBarAction = new toolBarActions();
+	ToolbarActions newtoolBarAction = new ToolbarActions();
 	JPanel mainPanel = new JPanel();
 	JPanel belowMainPanel = new JPanel();
 	JPanel leftmainPanel = new JPanel();
@@ -45,7 +52,8 @@ public class browser extends setFrame implements WindowListener {
 	static JScrollPane propertiesPanel = new JScrollPane(
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);;
-	JPanel importPanel = new JPanel();
+	//JPanel importPanel = new JPanel();
+	ImportTab importTab = new ImportTab();
 	//JPanel exportPanel = new JPanel();
 	ExportTab exportTab = new ExportTab();
 	JPanel goPanel = new JPanel();
@@ -54,9 +62,9 @@ public class browser extends setFrame implements WindowListener {
 
 	JButton goButton = new JButton("Go");
 
-	static databaseTree displayTree = new databaseTree();
+	static DatabaseTree displayTree = new DatabaseTree();
 	
-	public static databaseTree getDisplayTree(){
+	public static DatabaseTree getDisplayTree(){
 		return displayTree;
 	}public static JScrollPane getPropertiesPanel(){
 		return propertiesPanel;
@@ -68,7 +76,7 @@ public class browser extends setFrame implements WindowListener {
 	}
 
 	// Constructor
-	public browser() {
+	public Browser() {
 		super();
 		setJMenuBar(newtoolBarAction.getMenuBar());
 		mainPanel.setLayout(mainLayout); // No Layout for a tabbed pane
@@ -99,14 +107,14 @@ public class browser extends setFrame implements WindowListener {
 
 		goPanel.add(goButton);
 
-		propertiesTabHandler displayProperties = new propertiesTabHandler();
+		PropertiesTabHandler displayProperties = new PropertiesTabHandler();
 		propertiesPanel.setViewportView(displayProperties.getProperties());
 
 		rightTabbedPane.addTab("SQL", null, SqlTabbedPane.getTabbedPane(),
 				"SQL Query Tab");
 		rightTabbedPane.addTab("Properties", null, propertiesPanel,
 				"Properties Tab");
-		rightTabbedPane.addTab("Import", null, importPanel, "Import Tab");
+		rightTabbedPane.addTab("Import", null, importTab.getPanel(), "Import Tab");
 		rightTabbedPane.addTab("Export", null, exportTab.getPanel(), "Export Tab");
 
 		rightmainPanel.add(rightTabbedPane, BorderLayout.CENTER);

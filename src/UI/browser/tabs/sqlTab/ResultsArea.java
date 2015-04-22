@@ -1,7 +1,7 @@
 /**
  * 
  */
-package mysqlbrowser;
+package UI.browser.tabs.sqlTab;
 
 import java.io.IOException;
 import java.net.URL;

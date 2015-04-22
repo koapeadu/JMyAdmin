@@ -1,7 +1,7 @@
 /**
  * 
  */
-package mysqlbrowser;
+package UI.browser.tabs.sqlTab;
 
 import java.awt.Desktop;
 import java.awt.Toolkit;
@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.tools.Tool;
 
+import UI.browser.Browser;
 import mysqlServer.DBHandler;
 
 /**
@@ -105,6 +106,9 @@ public class ResultsTabbedPane {
 									results.getResults()));
 							results.showQueryResults(tableRes);
 
+						}
+						if(query.startsWith("(CREATE|DROP)i")){
+							Browser.getDisplayTree().showdatabases();
 						}
 					}
 				}

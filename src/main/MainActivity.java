@@ -3,9 +3,9 @@
  */
 package main;
 
-import mysqlbrowser.browser;
-import mysqlbrowser.setFrame;
-import userInterface.login.LoginUI;
+import UI.browser.Browser;
+import UI.login.LoginUI;
+import globals.SetFrame;
 
 /**
  * Brings up the login interface and opens up main JMyAdmin window if login is
@@ -18,12 +18,12 @@ public class MainActivity {
 
 	public static void main(String[] args) {
 		// 1. Create dummy JFrame to set location and size of Login dialog
-		setFrame dummy = new setFrame();
+		SetFrame dummy = new SetFrame();
 		// 2. Open Login interface
 		LoginUI dbLogin = new LoginUI(dummy);
 		// 3. If login is successful open JMyAdmin
 		if (dbLogin.isConnected()) {
-			browser newBrowser = new browser();
+			Browser newBrowser = new Browser();
 		} else {
 			// Terminate application
 			System.exit(0);

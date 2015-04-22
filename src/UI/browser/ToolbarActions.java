@@ -1,7 +1,9 @@
 /**
  * 
  */
-package mysqlbrowser;
+package UI.browser;
+
+import globals.SetFrame;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -14,8 +16,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+
+import UI.browser.tabs.sqlTab.SqlTabbedPane;
 
 /**
  * This class sets up the menu bar and the tool bar for the program
@@ -24,7 +29,7 @@ import javax.swing.KeyStroke;
  * @author Quake
  */
 
-public class toolBarActions implements ActionListener {
+public class ToolbarActions implements ActionListener {
 	/**
 	 * Menu bar
 	 */
@@ -71,7 +76,7 @@ public class toolBarActions implements ActionListener {
 	 * <p>
 	 * Initializes the <code>toolBar</code> and the <code>menuBar</code>
 	 */
-	public toolBarActions() {
+	public ToolbarActions() {
 
 		setInterfaceOfToolbar();
 		// add action listeners
@@ -79,11 +84,7 @@ public class toolBarActions implements ActionListener {
 		open.addActionListener(this);
 		save.addActionListener(this);
 		saveAs.addActionListener(this);
-		toolBarButtons[0].addActionListener(this);
-		toolBarButtons[2].addActionListener(this);
-		toolBarButtons[4].addActionListener(this);
-		toolBarButtons[5].addActionListener(this);
-
+		
 		// creating shortcuts for some menu items
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
 				ActionEvent.CTRL_MASK));
@@ -145,12 +146,13 @@ public class toolBarActions implements ActionListener {
 				"/resources/createTableIcon.jpeg"));
 		ImageIcon[] iconArray = { openIcon, runIcon, saveIcon, stopIcon,createDatabaseIcon,createTableIcon };
 		String[] toolBarString = { "Open", "Run", "Save", "Stop","Create database","Create table" };
-		toolBar.setPreferredSize(new Dimension(150, 20));
+		toolBar.setPreferredSize(new Dimension(150, 30));
 
 		for (int i = 0; i < 6; i++) {
 
 			toolBarButtons[i] = new JButton(iconArray[i]);
 			toolBarButtons[i].setToolTipText(toolBarString[i]);
+			toolBarButtons[i].addActionListener(this);
 			toolBar.add(toolBarButtons[i]);
 
 		}
@@ -188,21 +190,22 @@ public class toolBarActions implements ActionListener {
 			SqlTabbedPane.createFileDocument();
 		} else if (e.getSource() == save || e.getSource() == toolBarButtons[2]) {
 			SqlTabbedPane.saveDocument();
-		} else if (e.getSource() == newFile
-				|| e.getSource() == toolBarButtons[1]) {
+		} else if (e.getSource() == newFile) {
 			SqlTabbedPane.createBlankDocument();
 		} else if (e.getSource() == saveAs) {
 			SqlTabbedPane.saveDocumentAs();
 		}  else if (e.getSource() == toolBarButtons[4]) {
 			//Create dummy JFrame for the CreateDatabaseInterface constructor
-			setFrame dummy = new setFrame();
+			SetFrame dummy = new SetFrame();
 			//open the create database interface
 			CreateDatabaseInterface newDatabaseInterface =new CreateDatabaseInterface(dummy);
 			
 		}  else if (e.getSource() == toolBarButtons[5]) {
 			//SqlTabbedPane.saveDocumentAs();
-			setFrame dummy = new setFrame();
+			SetFrame dummy = new SetFrame();
 			CreateTableInterface newTableInterface =new CreateTableInterface(dummy);
+		} else if (e.getSource() == toolBarButtons[1]){
+			SqlTabbedPane.executeCurrent();
 		}
 		
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package userInterface.login;
+package UI.login;
 
 import globals.AppConstants;
 

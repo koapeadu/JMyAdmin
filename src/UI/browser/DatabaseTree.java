@@ -1,7 +1,9 @@
 /**
  * 
  */
-package mysqlbrowser;
+package UI.browser;
+
+import globals.SetFrame;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -28,13 +30,15 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import javax.xml.crypto.Data;
 
+import UI.browser.tabs.propertiesTab.PropertiesTabHandler;
+import UI.browser.tabs.sqlTab.SqlTabbedPane;
 import mysqlServer.DBHandler;
 
 /**
  * @author Gifty Buah
  *
  */
-public class databaseTree implements TreeWillExpandListener,
+public class DatabaseTree implements TreeWillExpandListener,
 		TreeExpansionListener, TreeSelectionListener {
 
 	JTree showdatabaseTree = new JTree();
@@ -43,8 +47,8 @@ public class databaseTree implements TreeWillExpandListener,
 
 	private ArrayList<JMenuItem> menuItems = new ArrayList<JMenuItem>();
 
-	private String rightClickedDB;
-	private String rightClickedTable;
+	private DefaultMutableTreeNode rightClickedDB;
+	private DefaultMutableTreeNode rightClickedTable;
 
 	public void showdatabases() {
 		Thread showdatabaseThread = new Thread(new Runnable() {
@@ -142,12 +146,10 @@ public class databaseTree implements TreeWillExpandListener,
 					if (level == 2) {
 						rightClickedTable = ((DefaultMutableTreeNode) ((JTree) e
 								.getSource()).getPathForLocation(e.getX(),
-								e.getY()).getLastPathComponent())
-								.getUserObject().toString();
+								e.getY()).getLastPathComponent());
 						rightClickedDB = ((DefaultMutableTreeNode) ((DefaultMutableTreeNode) ((JTree) e
 								.getSource()).getPathForLocation(e.getX(),
-								e.getY()).getLastPathComponent()).getParent())
-								.getUserObject().toString();
+								e.getY()).getLastPathComponent()).getParent());
 						popupMenu.removeAll();
 						for (int i = 0; i < tableItems.length; i++) {
 							popupMenu.add(menuItems.get(i));
@@ -155,8 +157,7 @@ public class databaseTree implements TreeWillExpandListener,
 					} else if (level == 1) {
 						rightClickedDB = ((DefaultMutableTreeNode) ((JTree) e
 								.getSource()).getPathForLocation(e.getX(),
-								e.getY()).getLastPathComponent())
-								.getUserObject().toString();
+								e.getY()).getLastPathComponent());
 						popupMenu.removeAll();
 						for (int i = tableItems.length; i < menuItems.size(); i++) {
 							popupMenu.add(menuItems.get(i));
@@ -194,7 +195,7 @@ public class databaseTree implements TreeWillExpandListener,
 
 	private void showTables(DefaultMutableTreeNode selectedNode) {
 		if (selectedNode.getLevel() == 0) {
-
+			showdatabases();
 		} else if (selectedNode.getLevel() == 1) {
 
 			Thread getTablesThread = new Thread(new Runnable() {
@@ -208,12 +209,15 @@ public class databaseTree implements TreeWillExpandListener,
 					// populate tablesNames with names of tables from selected
 					// database
 					tableNames = DBHandler.showTables(selectedDB);
+					selectedNode.removeAllChildren();
 					if (tableNames.size() != 0) {
-						selectedNode.removeAllChildren();
+						
 						for (String tableName : tableNames) {
 							selectedNode.add(new DefaultMutableTreeNode(
 									tableName));
 						}
+					} else {
+						selectedNode.add(new DefaultMutableTreeNode("No Tables"));
 					}
 					showdatabaseTree.updateUI();
 				}
@@ -262,9 +266,9 @@ public class databaseTree implements TreeWillExpandListener,
 	}
 
 	private void displayTableProperties(String databaseName, String tableName) {
-		propertiesTabHandler.setDatabase(databaseName);
-		propertiesTabHandler.setTable(tableName);
-		propertiesTabHandler.showTableProperties();
+		PropertiesTabHandler.setDatabase(databaseName);
+		PropertiesTabHandler.setTable(tableName);
+		PropertiesTabHandler.showTableProperties();
 	}
 
 	public String getSelectedDatabase() {
@@ -294,12 +298,16 @@ public class databaseTree implements TreeWillExpandListener,
 		public void actionPerformed(ActionEvent e) {
 			// create new table
 			if (((JMenuItem) e.getSource()).getText().equals(tableItems[0])) {
-
+				SetFrame dummy = new SetFrame();
+				CreateTableInterface newTableInterface = new CreateTableInterface(
+						dummy);
 			}
 			// show first 200 rows
 			else if (((JMenuItem) e.getSource()).getText()
 					.equals(tableItems[1])) {
-
+				SqlTabbedPane.select(
+						(String) rightClickedTable.getUserObject(),
+						(String) rightClickedDB.getUserObject());
 			}
 			// edit table
 			else if (((JMenuItem) e.getSource()).getText()
@@ -313,26 +321,32 @@ public class databaseTree implements TreeWillExpandListener,
 						.showConfirmDialog(
 								null,
 								"Do you want to drop "
-										+ rightClickedDB
+										+ rightClickedTable
 										+ "?\nWarning: This operation will delete all the data therein.",
 								"Confirm", JOptionPane.YES_NO_OPTION,
 								JOptionPane.WARNING_MESSAGE);
 				if (response == JOptionPane.YES_OPTION) {
-					Object[][] res = DBHandler.sqlQuery("DROP TABLE IF EXISTS "
-							+ rightClickedDB + "." + rightClickedTable, null);
+					Object[][] res = DBHandler.sqlQuery("DROP TABLE "
+							+ rightClickedDB.getUserObject() + "."
+							+ rightClickedTable.getUserObject(), null);
 					if ((boolean) res[0][0] == true) {
 						Toolkit.getDefaultToolkit().beep();
 						JOptionPane.showMessageDialog(showdatabaseTree,
 								res[0][1], "Error", JOptionPane.ERROR_MESSAGE);
+					} else {
+						showTables(rightClickedDB);
+						showdatabaseTree.validate();
 					}
 				}
 			}
 			// properties
 			else if (((JMenuItem) e.getSource()).getText()
 					.equals(tableItems[4])) {
-				propertiesTabHandler.setDatabase(rightClickedDB);
-				propertiesTabHandler.setTable(rightClickedTable);
-				propertiesTabHandler.showTableProperties();
+				PropertiesTabHandler.setDatabase((String) rightClickedDB
+						.getUserObject());
+				PropertiesTabHandler.setTable((String) rightClickedTable
+						.getUserObject());
+				PropertiesTabHandler.showTableProperties();
 			}
 		}
 	}
@@ -342,7 +356,12 @@ public class databaseTree implements TreeWillExpandListener,
 		public void actionPerformed(ActionEvent e) {
 			// create new database
 			if (((JMenuItem) e.getSource()).getText().equals(databaseItems[0])) {
-
+				// Create dummy JFrame for the CreateDatabaseInterface
+				// constructor
+				SetFrame dummy = new SetFrame();
+				// open the create database interface
+				CreateDatabaseInterface newDatabaseInterface = new CreateDatabaseInterface(
+						dummy);
 			}
 			// delete database
 			else if (((JMenuItem) e.getSource()).getText().equals(
@@ -351,17 +370,19 @@ public class databaseTree implements TreeWillExpandListener,
 						.showConfirmDialog(
 								null,
 								"Do you want to drop "
-										+ rightClickedDB
+										+ rightClickedDB.getUserObject()
 										+ "?\nWarning: This operation will delete all tables in the database.",
 								"Confirm", JOptionPane.YES_NO_OPTION,
 								JOptionPane.WARNING_MESSAGE);
 				if (response == JOptionPane.YES_OPTION) {
-					Object[][] res = DBHandler.sqlQuery(
-							"DROP DATABASE IF EXISTS " + rightClickedDB, null);
+					Object[][] res = DBHandler.sqlQuery("DROP DATABASE "
+							+ rightClickedDB.getUserObject(), null);
 					if ((boolean) res[0][0] == true) {
 						Toolkit.getDefaultToolkit().beep();
 						JOptionPane.showMessageDialog(showdatabaseTree,
 								res[0][1], "Error", JOptionPane.ERROR_MESSAGE);
+					} else {
+						Browser.getDisplayTree().showdatabases();
 					}
 				}
 			}

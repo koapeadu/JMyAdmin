@@ -1,9 +1,10 @@
 /**
  * 
  */
-package mysqlbrowser;
+package UI.browser.tabs.sqlTab;
 
 import globals.AppConstants;
+import globals.FileHandler;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -20,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+
+import UI.browser.Browser;
 
 /**
  * An <code>SqlDocument</code> is a customized JPanel that comprises a text
@@ -79,24 +82,29 @@ public class SqlDocument extends JPanel {
 		goButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String sqlQuery = sqlArea.getText();
-				res.setTabbedPane((JTabbedPane) ((JSplitPane) SqlDocument.this
-						.getParent()).getBottomComponent());
-				res.exec(sqlQuery, browser.getDisplayTree()
-						.getSelectedDatabase());
+				execute();
 			}
 		});
 
 		open();
 	}
+	
+	public void execute(){
+		String sqlQuery = sqlArea.getText();
+		res.setTabbedPane((JTabbedPane) ((JSplitPane) SqlDocument.this
+				.getParent()).getBottomComponent());
+		res.exec(sqlQuery, Browser.getDisplayTree()
+				.getSelectedDatabase());
+		//browser.getDisplayTree().showdatabases();
+	}
 
-	public void executeSelected() {
+	/*public void executeSelected() {
 		String sqlQuery = sqlArea.getSelectedText();
 		ResultsTabbedPane res = new ResultsTabbedPane();
 		res.setTabbedPane((JTabbedPane) ((JSplitPane) SqlDocument.this
 				.getParent()).getBottomComponent());
 		res.exec(sqlQuery, browser.getDisplayTree().getSelectedDatabase());
-	}
+	}*/
 
 	/**
 	 * Saves changes to a document to the path in <code>filePath</code>
@@ -206,6 +214,10 @@ public class SqlDocument extends JPanel {
 	 */
 	public String getFilePath() {
 		return filePath;
+	}
+
+	public void setQuery(String query) {
+		sqlArea.setText(query);
 	}
 
 }
