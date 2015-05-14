@@ -13,9 +13,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeExpansionEvent;
@@ -28,11 +28,10 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import javax.xml.crypto.Data;
 
+import mysqlServer.DBHandler;
 import UI.browser.tabs.propertiesTab.PropertiesTabHandler;
 import UI.browser.tabs.sqlTab.SqlTabbedPane;
-import mysqlServer.DBHandler;
 
 /**
  * @author Gifty Buah

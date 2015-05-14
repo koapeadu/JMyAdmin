@@ -14,7 +14,7 @@ import java.awt.Toolkit;
 public interface AppConstants {
 	Double PROGRAM_VERSION = 1.0;
 	String LOGIN_UI_TITLE = "Connect to MySQL Server";
-	String PROGRAM_NAME = "JMyAdmin";
+	String PROGRAM_NAME = "MySQL Studio/J";
 	String LOGIN_UI_MESSAGE = PROGRAM_NAME + " " + PROGRAM_VERSION;
 
 	String DB_HOST = "jdbc:mysql://localhost:3306/";

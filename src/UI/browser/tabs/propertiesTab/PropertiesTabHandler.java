@@ -6,8 +6,8 @@ package UI.browser.tabs.propertiesTab;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import UI.browser.Browser;
 import mysqlServer.DBHandler;
+import UI.browser.Browser;
 
 /**
  * @author Gifty Buah

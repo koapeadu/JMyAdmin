@@ -3,15 +3,13 @@
  */
 package UI.browser.tabs.sqlTab;
 
-import java.awt.Desktop;
 import java.awt.Toolkit;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.tools.Tool;
 
-import UI.browser.Browser;
 import mysqlServer.DBHandler;
+import UI.browser.Browser;
 
 /**
  * Essentially comprises <code>resultsPane</code>, a <code>JTabbedPane</code>

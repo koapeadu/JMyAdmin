@@ -3,9 +3,9 @@
  */
 package main;
 
+import globals.SetFrame;
 import UI.browser.Browser;
 import UI.login.LoginUI;
-import globals.SetFrame;
 
 /**
  * Brings up the login interface and opens up main JMyAdmin window if login is

@@ -18,7 +18,7 @@ public class SetFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public SetFrame() {
-		super("JMyAdmin");
+		super(AppConstants.PROGRAM_NAME);
 		setBounds(AppConstants.PROGRAM_WIDTH / 5,
 				AppConstants.PROGRAM_HEIGHT / 5, AppConstants.PROGRAM_WIDTH,
 				AppConstants.PROGRAM_HEIGHT);

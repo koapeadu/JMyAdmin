@@ -209,7 +209,7 @@ public class SqlTabbedPane {
 	private static JPanel getTabTitle(String title) {
 		JPanel titlePanel = new JPanel(new BorderLayout(3, 1));
 		titlePanel.setOpaque(false);
-		titlePanel.setMinimumSize(new Dimension(0, 23));
+		titlePanel.setMinimumSize(new Dimension(45, 23));
 		// Add the tab's title
 		titlePanel.add(new JLabel(title), BorderLayout.WEST);
 		// create the close button
